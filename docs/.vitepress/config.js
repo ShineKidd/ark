@@ -31,6 +31,7 @@ module.exports = {
       { text: 'Misc', link: '/misc/' },
       { text: 'Git', link: '/git/' },
       { text: 'Algorithm', link: '/algorithm/' },
+      { text: 'Code', link: '/code/' },
     ],
 
     sidebar: {
@@ -40,6 +41,7 @@ module.exports = {
       '/misc/': getMiscSidebar(),
       '/git/': getGitSidebar(),
       '/algorithm/': getAlgorithmSidebar(),
+      '/code/': getCodeSidebar(),
     }
   }
 }
@@ -68,17 +70,27 @@ function getServerSidebar() {
     { text: 'server', link: '/server/my-sql' },
   ]
 }
+
 function getMiscSidebar() {
   return [
   ]
 }
+
 function getGitSidebar() {
   return [
   ]
 }
+
 function getAlgorithmSidebar() {
   return [
     { text: '《算法图解》', link: '/algorithm/book-grokking-algorithms' },
     { text: '《JS 数据结构与算法》', link: '/algorithm/book-js-data-structure-and-algorithms' },
+  ]
+}
+
+function getCodeSidebar() {
+  return [
+    { text: 'Loadsh', link: '/code/loadsh' },
+    { text: 'Tapable', link: '/code/tapable' },
   ]
 }

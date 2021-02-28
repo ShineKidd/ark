@@ -2,6 +2,8 @@
 title: webpack
 ---
 
+基于 webpack4.x 整理
+
 ### Getting Started
 
 无需配置，`webpack` 能直接处理 js/json，支持 ES module
@@ -66,7 +68,7 @@ production 模式下会自动压缩 js 代码
      * 指定非入口 chunk 的命名规则
      * 如 import() 引入的资源，名字默认是 [数字].js
      */
-    chunkFilename: '[name]_[chunkhash].js',
+    chunkFilename: '[name]_[chunkhash].chun.js',
 
     /* 向外暴露的变量名 */
     library: 'myTool',
@@ -81,6 +83,8 @@ production 模式下会自动压缩 js 代码
 ```js
 {
   module: {
+    /* 不参与解析的库 */
+    noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
     rules: [
       // 配置形式一
       {
@@ -93,7 +97,8 @@ production 模式下会自动压缩 js 代码
             loader: 'postcss-loader',
             options: {...}
           }
-        ]
+        ],
+        sideEffects: true,
       },
       // 配置形式二
       {
@@ -129,6 +134,8 @@ production 模式下会自动压缩 js 代码
 ```js
 {
   optimization: {
+    /* 生产环境开启压缩 */
+    minimize: isEnvProduction,
     splitChunks: {
       /**
        * 将 node_modules 的代码打包成一个单独的 chunk
@@ -177,11 +184,17 @@ production 模式下会自动压缩 js 代码
      * webpack 4.26.x 内部使用 terser-webpack-plugin 做代码压缩
      */
     minimizer: [
+      /* 压缩 js */
       new TerserWebpackPlugin({
         cache: true,
         parallel: true, // 多进程
         sourceMap: false,
-      })
+      }),
+      /* 压缩 css */
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {...},
+        cssProcessorPluginOptions: {...},
+      }),
     ],
   },
 }
@@ -246,6 +259,15 @@ if (module.hot) {
 
 ```
 
+### peformance
+
+关闭 webpack 自带的性能分析（提高速度），一般我们使用其他插件做性能分析
+
+```js
+{
+  performance: false
+}
+```
 
 ### devtool
 
@@ -307,7 +329,85 @@ cheap-module-source-map | 同上                          | 会将 loader 的 so
 ```
 
 
+
+### resolveLoadrs
+
+```js
+{
+  resolveLoadrs: {
+    modules: ['node_modules', path.resolve(__dirname, 'my-loaders')]
+  }
+}
+```
+
+
+## node
+
+webpack4 会把一些 node 模块打包进来，但是在浏览器端用不上
+
+```js
+{
+  node: {
+    module: 'empty',
+    dgram: 'empty',
+    dns: 'mock',
+    fs: 'empty',
+    http2: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty',
+  },
+}
+```
+
 ## Official Loader
+
+
+loader 本质上是一个函数
+
+
+同步 loader 示例
+
+```js
+module.exports = function (content, map, meta) {
+  // process content...
+
+  // 直接返回处理结果或使用回调
+  return content // or this.call(err, content, map?, meta?)
+}
+// 各个 loader 的 pitch 函数是按配置 loader 的顺序执行
+// 这和 use 中 loader 的执行顺序相反
+module.exports.pitch = function () {
+
+}
+```
+
+异步 loader 示例（推荐）
+
+```js
+const { getOptions } = require('loader-utils')
+const { validate } = require('schema-utils')
+const schema = {
+  type: 'object', // 参数类型
+  properties: { // 配置项及其值的类型
+    maxSize: { type: 'string', description: '最大xxx值' }
+  },
+  additionalProperties: true, // 是否允许存在额外的属性
+}
+
+module.exports = function (content, map, meta) {
+  // 获取 loder 的 options 配置
+  const options = getOptions(this)
+  // 校验 options 配置是否正确
+  validate(schema, options, { name: 'my loader' })
+
+  const callback = this.async()
+
+  setTimeout(() => {
+    callback(err, content, map?, meta?)
+  }, 1000)
+}
+```
 
 ### style-loader
 
@@ -370,7 +470,7 @@ cheap-module-source-map | 同上                          | 会将 loader 的 so
 
 ```js
 {
-  test: /\.(jpe?g|png|gif)$/,
+  test: /\.(bmp|jpe?g|png|gif)$/,
   loader: 'url-loader',
   options: {
     /* 转 base64 的上限 */
@@ -379,7 +479,14 @@ cheap-module-source-map | 同上                          | 会将 loader 的 so
     /* 使用 es module 解析 */
     esModule: true，
 
-    name: '[contenthash:10].[ext]'
+    name: '[contenthash:10].[ext]',
+
+    fallback: {
+      loader: 'option-loader',
+      options: {
+        name: 'media/[name][hash:8].[ext]'
+      }
+    }
   }
 }
 ```
@@ -475,13 +582,13 @@ cheap-module-source-map | 同上                          | 会将 loader 的 so
         }
       }]
     ],
-
     /* 二次构建时，读取之前 的缓存 */
     cacheDirectory: true,
   }
 }
 ```
 
+`babel-loader` 本身支持缓存，可以不使用 `cache-loader`
 
 ### thread-loader
 
@@ -507,7 +614,37 @@ cheap-module-source-map | 同上                          | 会将 loader 的 so
   进程启动大概 600ms ，进程之间通信也要消耗时间，如果项目非常小，没有必要使用
 :::
 
+### cache-loader
+
+
 ## Official Plugin
+
+webpack 定义了很多编译过程中的钩子，这些钩子 Tapable 类的实现
+
+```js
+const { RawSource } = require('webpack-sources')
+
+class MyPlugin {
+  apply (compiler) {
+    compiler.hooks.thisCompilation.tap('MyPlugin', function (compilation) {
+      compilation.hooks.additionalAssets.tapAsync('MyPlugin', function (cb) {
+        // 手动添加文件
+        compilation.emitAsset('a.txt', {
+          size() { return 5 },
+          source() { return 'hello' }
+        })
+        // 使用 webpack-sources 转化
+        const data = fs.readSync(resolve(__dirname, 'b.text'))
+        compilation.emitAsset('b.text', new RawSource(data))
+
+        cb()
+      })
+    })
+  }
+}
+module.exports = MyPlugin
+```
+
 ### html-webpack-plugin
 
 
@@ -522,6 +659,14 @@ new HtmlWebpackPlugin({
     removeComments: true,
   }
 })
+```
+
+### inline-chunk-html-plugin
+
+将 js 内联到 index.html 中
+
+```js
+isEnvProduction && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime.+\.js/])
 ```
 
 ### mini-css-extract-plugin
@@ -541,6 +686,11 @@ new MiniCssExtractPlugin({
 })
 ```
 
+
+### @intervolga/optimize-cssnano-plugin
+
+
+
 ### optimize-css-assets-webpack-plugin
 
 用于压缩 css 文件
@@ -549,15 +699,9 @@ new MiniCssExtractPlugin({
 new OptimizeCssAssetsWebpackPlugin()
 ```
 
-
-
-
 ::: tip 💡
   行文中的 `resolve` 函数是 `path.resolve`
 :::
-
-
-
 
 
 ### workbox-webpack-plugin
@@ -590,7 +734,6 @@ if ('serviceWorker' in navigator) {
   })
 }
 ```
-
 
 
 ### webpack.DllPlugin
@@ -642,6 +785,33 @@ module.exports = {
 }
 ```
 
+### webpack.DefinePlugin
+
+```js
+new webpack.DefinePlugin({
+  NODE_ENV: JSON.stringify('production'),
+  PUBLIC_URL: JSON.stringify('/'),
+}),
+```
+
+### webpack.HotModuleReplacementPlugin
+
+```js
+isEnvProduction && new webpack.HotModuleReplacementPlugin()
+```
+
+### webpack.IgnorePlugin
+
+
+```js
+// https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
+new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+// or
+new wepback.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-ch/)
+```
+
+
+### manifest-plugin
 
 
 
@@ -707,7 +877,8 @@ import(/* webpackChunkName: math, webpackPrefetch: true */, './math')
   3. 使用 `webpack.DllPlugin` 预先打包好一些第三方库（这些依赖不会轻易更新），再打包时跳过这些库
   4. 配置 `externals` 某些文件走 CDN，直接跳过打包
   4. 配置 `devServer.watchOptions.ignored` 忽略某些目录(node_modules)
-
+  5. 配置 `cache-loader` 缓存编译结果
+  6. contenthas 是否比 has 更慢？
 
 
 
