@@ -623,26 +623,63 @@ webpack 定义了很多编译过程中的钩子，这些钩子 Tapable 类的实
 
 ```js
 const { RawSource } = require('webpack-sources')
+const { validate } = require('schema-utils')
+const globby = require('globby')
+const schema = {
+  type: 'object',
+  properties: {
+    to: { type: 'string', description: '起始目录' } ,
+    from: { type: 'string', description: '目标目录' } ,
+    ignore: { type: 'array', description: '忽略文件' }
+  },
+  additionalProperties: false
+}
 
 class MyPlugin {
+  constructor (options = {}) {
+    validate(schema, options, { name: 'MyPlugin' })
+    this.options = options
+  }
   apply (compiler) {
     compiler.hooks.thisCompilation.tap('MyPlugin', function (compilation) {
-      compilation.hooks.additionalAssets.tapAsync('MyPlugin', function (cb) {
+      compilation.hooks.additionalAssets.tapAsync('MyPlugin', async function (cb) {
         // 手动添加文件
         compilation.emitAsset('a.txt', {
           size() { return 5 },
           source() { return 'hello' }
         })
-        // 使用 webpack-sources 转化
-        const data = fs.readSync(resolve(__dirname, 'b.text'))
+        // 使用 webpack-sources 转化文件
+        const data = fs.readFileSync(resolve(__dirname, 'b.text'), 'utf-8')
         compilation.emitAsset('b.text', new RawSource(data))
 
+        // 复制指定目录的文件
+        const baseDir = compiler.options.context
+        const toDir = this.options.to || '.'
+        const { from, ignore } = this.options
+        const fromDir = path.isAbsolute(from) ? from : path.resolve(__dirname, this.options.from)
+        const paths = await globby(fromDir, { ignore }) // 获取要复制的文件的路径
+        for (const filePath of paths) {
+          const data = fs.readFileSync(filePath, 'utf-8')
+          const relativePath = path.basename(filePath)
+          const filename = path.join(to, relativePath)
+          compilation.emitAsset(filename, new RawRouce(data))
+        }
         cb()
       })
     })
   }
 }
 module.exports = MyPlugin
+```
+
+测试 MyPlugin
+```js
+new MyPlugin({
+  from: 'public',
+  to: 'dist',
+  ignore: ['**/index.html']
+})
+
 ```
 
 ### html-webpack-plugin
