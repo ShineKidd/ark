@@ -443,16 +443,16 @@ module.exports = function (content, map, meta) {
 ```json
 {
   "browserslist": {
-    "development": {
+    "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version",
-    },
-    "production": {
+      "last 1 safari version"
+    ],
+    "production": [
       ">2%",
       "not dead",
-      "not op_mini all",
-    }
+      "not op_mini all"
+    ],
   }
 }
 ```
