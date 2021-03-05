@@ -283,7 +283,7 @@ source-map           | 打印错误文件名和行数，能跳转到源代码出
 inline-source-map    | 同上                            | 把所有 sourceMap 内联到 js 尾部，优势：构建速度快
 eval-source-map      | 文件名错误，其他同上               | 每个 sourceMap 分别内联到每个 eval 函数中
 hidden-source-map    | 打印错误文件名，但行数错误，会跳转到构建后码出错位置 |
-nosource-source-map  | 打印错误文件名和行数，无法跳转到代码出错位置 | 无 sourceMap 文件
+nosources-source-map  | 打印错误文件名和行数，无法跳转到代码出错位置 | 无 sourceMap 文件
 cheap-source-map     | 打印错误文件名和行数，能跳转到源代码位置，不能精确定位到错误所在列
 cheap-module-source-map | 同上                          | 会将 loader 的 source map 加进来
 
@@ -938,14 +938,16 @@ import(/* webpackChunkName: math, webpackPrefetch: true */, './math')
 - 运行时性能
 
 - 隐藏源码
-  1. devtool 设置为 `nosource-source-map` 。切忌使用 inline- ，这会使代码体积变得很大！
+  1. devtool 设置为 `nosources-source-map` 或 false 。切忌使用 inline- ，这会使代码体积变得很大！
   2. 混淆
 
 - 加载速度
   1. 使用 ES module 以实现 tree shaking
   3. 静态资源预先 gzip（服务器需开启对应配置）
-  4. 配置 `optimization: { splitChunks }`抽离公共依赖为单独 chunk
+  4. 配置 `optimization: { splitChunks }` 抽离公共依赖为单独 chunk 降低代码变动缓存失效
   5. 使用 `import()` 实现懒加载、预加载
+  6. 配置 externals ，配置 CDN
+
 
 - 缓存
   1. 避免缓存失效：文件名不使用 `hash` `chunkhash`，启用 `runtimeChunk`
