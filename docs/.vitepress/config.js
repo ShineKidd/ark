@@ -85,6 +85,7 @@ function getAlgorithmSidebar() {
   return [
     { text: '《算法图解》', link: '/algorithm/book-grokking-algorithms' },
     { text: '《JS 数据结构与算法》', link: '/algorithm/book-js-data-structure-and-algorithms' },
+    { text: '算法实战', link: '/algorithm/practice' },
   ]
 }
 
