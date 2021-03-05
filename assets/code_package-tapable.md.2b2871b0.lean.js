@@ -1,0 +1,1 @@
+import{o as n,c as s,d as a}from"./app.f2c44775.js";const p='{"title":"Tapable 库的实现","description":"","frontmatter":{"title":"Tapable 库的实现"},"relativePath":"code/package-tapable.md","lastUpdated":1614952606008}',t={},o=a('',2);t.render=function(a,p,t,c,e,u){return n(),s("div",null,[o])};export default t;export{p as __pageData};
