@@ -53,10 +53,10 @@ function getJavaSidebar() {
     { text: 'Thread', link: '/java/thread' },
     { text: 'Enum', link: '/java/enum' },
     { text: 'Annotation', link: '/java/annotation' },
-    { text: 'Collection', link: '/java/collection' },
+    { text: 'Collection Map', link: '/java/collection-map' },
     { text: 'IO', link: '/java/io' },
     { text: 'Generic', link: '/java/generic' },
-    { text: '🛠 Date Time', link: '/java/util_date_time' },
+    { text: '🛠 Date Time', link: '/java/util-date-time' },
   ]
 }
 
