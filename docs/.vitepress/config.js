@@ -51,6 +51,12 @@ function getJavaSidebar() {
     { text: 'Interface', link: '/java/interface' },
     { text: 'Class', link: '/java/class' },
     { text: 'Thread', link: '/java/thread' },
+    { text: 'Enum', link: '/java/enum' },
+    { text: 'Annotation', link: '/java/annotation' },
+    { text: 'Collection', link: '/java/collection' },
+    { text: 'IO', link: '/java/io' },
+    { text: 'Generic', link: '/java/generic' },
+    { text: '🛠 Date Time', link: '/java/util_date_time' },
   ]
 }
 
