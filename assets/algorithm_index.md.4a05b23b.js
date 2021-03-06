@@ -1,0 +1,1 @@
+import{o as t,c as e,b as r}from"./app.59f5dd45.js";const a='{"title":"数据结构与算法","description":"","frontmatter":{"title":"数据结构与算法"},"relativePath":"algorithm/index.md","lastUpdated":1615022450675}',d={},i=r("p",null,"summary",-1);d.render=function(r,a,d,l,n,o){return t(),e("div",null,[i])};export default d;export{a as __pageData};

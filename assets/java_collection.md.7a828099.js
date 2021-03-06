@@ -1,0 +1,1 @@
+import{o as t,c as a}from"./app.59f5dd45.js";const e='{"title":"java 集合","description":"","frontmatter":{"title":"java 集合"},"relativePath":"java/collection.md","lastUpdated":1615022450675}',r={};r.render=function(e,r,o,d,i,n){return t(),a("div")};export default r;export{e as __pageData};

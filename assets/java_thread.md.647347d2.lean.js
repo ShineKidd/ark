@@ -1,0 +1,1 @@
+import{o as t,c as a,b as e}from"./app.59f5dd45.js";const r='{"title":"","description":"","frontmatter":{},"relativePath":"java/thread.md","lastUpdated":1615022450675}',d={},n=e("p",null,"#ddff 大大方方",-1);d.render=function(e,r,d,o,l,p){return t(),a("div",null,[n])};export default d;export{r as __pageData};
