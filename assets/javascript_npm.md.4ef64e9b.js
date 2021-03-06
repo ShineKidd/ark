@@ -1,1 +1,0 @@
-import{o as t,c as e}from"./app.59f5dd45.js";const r='{"title":"","description":"","frontmatter":{},"relativePath":"git/github.md","lastUpdated":1615022450675}',a={};a.render=function(r,a,d,i,o,n){return t(),e("div")};export default a;export{r as __pageData};

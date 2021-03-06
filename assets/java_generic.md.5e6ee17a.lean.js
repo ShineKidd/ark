@@ -1,1 +1,0 @@
-import{o as t,c as a}from"./app.59f5dd45.js";const e='{"title":"java 泛型","description":"","frontmatter":{"title":"java 泛型"},"relativePath":"java/generic.md","lastUpdated":1615022450675}',r={};r.render=function(e,r,d,i,o,n){return t(),a("div")};export default r;export{e as __pageData};
