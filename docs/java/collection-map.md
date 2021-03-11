@@ -104,12 +104,35 @@ new TreeSet(Comparator);
 
 双列数据 y = f(x)
 
+Map 中的 key 是无序的，不可重复，使用 Set 存储所有的 key
 
-### HashMap
+Map 中的 value 是无序，可重复，使用 Collection 存储所有的 value
+
+Map 中的 Entry 是无序，不可重复，使用 Set 存储所有的 value
 
 
-### LinkedHashMap
-### TreeMap
-### Hashtable
-### Properties
+### 方法
 
+`put(Object: key, Object: value)` `putAll(Map: m)` `remove(Object: key)` `clear()` `size()` `isEmpty()` `equals()` `get(Object: key)` `containsKey(Object: key)` `containsValue(Object: value)` `keySet()` `values()` `entrySet()`
+
+
+- HashMap jdk 1.2 线程不安全，可存储 null 的 key value，底层 数组 + 链表
+
+初始容量 16，填充因子 0.75，当某一索引上的链表长度 > 8 且 Node[] 长度 > 64 ，该索引位置数据转为用红黑树存储
+
+```java
+HashMap map = new HashMap(); // Entry[] 长度 16  ，扩容时 容量翻倍
+map.put(key, value)
+// key.hashCode()
+// code 相同
+//   key.equals() ? 替换 value : 添加成链表
+// code 不同，添加
+```
+jdk8 用 Node[] 代替 Entry ，搜查 put 才创建。存储：数组 + 链表 + 红黑树（
+
+
+
+- LinkedHashMap 遍历时按添加的顺序
+- TreeMap 底层使用 红黑树
+- Hashtable: jdk 1.0 线程安全效率低，不能存储 null
+- Properties
