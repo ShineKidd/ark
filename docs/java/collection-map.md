@@ -133,6 +133,60 @@ jdk8 用 Node[] 代替 Entry ，搜查 put 才创建。存储：数组 + 链表 
 
 
 - LinkedHashMap 遍历时按添加的顺序
+
+
 - TreeMap 底层使用 红黑树
-- Hashtable: jdk 1.0 线程安全效率低，不能存储 null
+
+要求 key 是同一个类创建的对象，因为要根据 key 进行排序
+
+
+```java
+// 定制排序，传入 Comparator 对象
+TreeMap map = new TreeMap(new Comparator () {
+  @override
+  public int compare(Object o1, Object o2) {
+    if (o1 instanceof User && o2 instanceof User) {
+      User u1 = (User)o1;
+      User u2 = (User)o2;
+      return Integer.compare(u1.getAge(), u2.getAge());
+    } else {
+      throw new RuntimeException("输入的类型不匹配");
+    }
+  }
+});
+```
+
+
+- Hashtable: jdk 1.0 线程安全效率低，不建议使用，不能存储 null
 - Properties
+
+用于处理配置文件，key value 都是 string 型
+
+```java
+public class TestProperties {
+  public static void main (String[] args) throws Exception {
+    Properties pros = new Properties();
+    FileInputStream fis = new FileInputStream("./jdbc.properties");
+    pros.load(fis);
+    String name = pros.getProperty("name");
+    String pwd = pros.getProperty("password");
+  }
+}
+```
+
+## Collections
+
+操作 Collection Map 的工具类
+
+常用方法
+
+`reverse(List)` `shuffle(List)` `sort(List)` 自然排序 `swap(List, Int, Int)` `max(Collection, Comparator?)` `min(Collection, Comparator?)` `frequency(Collection, Object)` 自定元素出现的次数 `copy(List dest, List src)` `replaceAll(List, Object oldVal, Object newVal)`
+
+
+将指定集合包装成线程同步的集合
+
+
+```java
+List unsafeList = new ArrayList();
+List safeList = Collections.synchronizedList(lisunsafeListt);
+```
