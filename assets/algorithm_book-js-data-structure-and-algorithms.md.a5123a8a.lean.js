@@ -1,1 +1,0 @@
-import{o as t,c as a}from"./app.a7255a47.js";const r='{"title":"学习 JavaScript 数据结构与算法","description":"","frontmatter":{"title":"学习 JavaScript 数据结构与算法"},"relativePath":"algorithm/book-js-data-structure-and-algorithms.md","lastUpdated":1615479396839}',e={};e.render=function(r,e,o,i,d,p){return t(),a("div")};export default e;export{r as __pageData};
