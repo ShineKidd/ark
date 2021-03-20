@@ -134,6 +134,7 @@ jdk8 用 Node[] 代替 Entry ，搜查 put 才创建。存储：数组 + 链表 
 
 - LinkedHashMap 遍历时按添加的顺序
 
+继承至 HashMap 内部定义了 Entry 类，替换 HashMap 的 Node 类
 
 - TreeMap 底层使用 红黑树
 
