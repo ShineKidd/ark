@@ -1,1 +1,0 @@
-import{o as t,c as o}from"./app.a7255a47.js";const r='{"title":"《图解 HTTP》","description":"","frontmatter":{"title":"《图解 HTTP》"},"relativePath":"protocol/book-grokking-http.md","lastUpdated":1616250605158}',e={};e.render=function(r,e,a,i,p,n){return t(),o("div")};export default e;export{r as __pageData};
