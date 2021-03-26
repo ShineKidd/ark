@@ -43,7 +43,7 @@ Set<Map.Entry<String, Integer>> set = map.entrySet();
 
 ## 自定义泛型结构
 
-泛型类、泛型接口、泛型方法
+泛型类、泛型接口
 
 ```java
 public class Order<T> {
@@ -83,10 +83,57 @@ T[] arr = (T[]) new Object[10];
 实例化时，如果没有指明类的泛型，则泛型的类型默是 Object，但不等同于 Object
 静态方法中不能使用泛型，泛型类型实例化时传入
 异常类不能声明为泛型类
+父类是泛型类，子类继承父类，可以保留父类部分泛型，并增加自己特有的泛型
 :::
+
+
+泛型方法，和其所属的类是不是泛型类无关，泛型方法可以声明为静态方法
+
+```java
+public <E> List<E> copyFromArrayToList(E[] arr) {
+  ArrayList<E> list = new ArrayList<>();
+  for (E e : arr) {
+    list.add(e);
+  }
+  return list;
+}
+```
 
 ## 泛型在继承上的体现
 
+```java
+public class DAO<T> {
+  public void add (T item) {
+
+  }
+  public boolean remove (int index) {
+    return false;
+  }
+  public void update (int index, T item) {
+
+  }
+  public T getIndex(int index) {
+    return null;
+  }
+  public List<T> getList () {
+    return null;
+  }
+  public <E> E getValue() {
+    return null;
+  }
+}
+
+public class Customer {
+
+}
+
+public class CustomerDAO extends DAO<Customer> {
+
+}
+
+CustomerDAO dao = new CustomerDAO();
+dao.add(new Customer());
+```
 
 ## 通配符的使用
 
