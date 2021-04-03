@@ -1,1 +1,0 @@
-import{o as t,c as r}from"./app.a7255a47.js";const o='{"title":"《算法图解》","description":"","frontmatter":{"title":"《算法图解》"},"relativePath":"algorithm/book-grokking-algorithms.md","lastUpdated":1616771258586}',a={};a.render=function(o,a,e,i,n,d){return t(),r("div")};export default a;export{o as __pageData};
