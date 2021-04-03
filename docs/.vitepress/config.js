@@ -37,6 +37,7 @@ module.exports = {
     sidebar: {
       '/java/': getJavaSidebar(),
       '/javascript/': getJavaScriptSidebar(),
+      '/css/': getCSSSidebar(),
       '/server/': getServerSidebar(),
       '/misc/': getMiscSidebar(),
       '/git/': getGitSidebar(),
@@ -69,6 +70,12 @@ function getJavaScriptSidebar() {
     { text: 'chrome', link: '/javascript/chrome' },
   ]
 }
+function getCSSSidebar() {
+  return [
+    { text: 'CSS2', link: '/css/css2' },
+    { text: 'CSS next', link: '/css/css-next' },
+  ]
+}
 
 function getServerSidebar() {
   return [
@@ -79,6 +86,8 @@ function getServerSidebar() {
 
 function getMiscSidebar() {
   return [
+    { text: 'FE Team', link: '/misc/fe-team' },
+    { text: 'Start yml', link: '/misc/start-yml' },
   ]
 }
 
