@@ -879,7 +879,7 @@ contenthash | 根据文件内容生产 hash（可靠）
 
 ```js
 /* 如果不指定 `webpackChunkName` 文件名是数字递增，不友好 */
-import(/* webpackChunkName: math, webpackPrefetch: true */, './math')
+import(/* webpackChunkName: "math", webpackPrefetch: true */, './math')
   .then(function({ add }) {
     add(1, 2)
   })
