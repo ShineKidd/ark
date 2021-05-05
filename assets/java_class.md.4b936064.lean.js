@@ -1,0 +1,1 @@
+import{o as t,c as a,b as e}from"./app.d7e7aadc.js";const r='{"title":"","description":"","frontmatter":{},"relativePath":"java/class.md","lastUpdated":1620227023151}',d={},l=e("p",null,"但是分身乏术",-1);d.render=function(e,r,d,n,o,s){return t(),a("div",null,[l])};export default d;export{r as __pageData};
