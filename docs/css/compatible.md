@@ -54,12 +54,14 @@ IE 10 flex 默认值是 0 0 auto
 
 ```css
 .footer-bar {
-  /* constant 向下兼容 */
+  /* constant 向下兼容旧版 Safari */
   padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
+  /* 第二个参数可选，用于第一个值不合法时回滚 */
+  padding-bottom: env(safe-area-inset-bottom, 40px);
 }
 ```
 
+> https://developer.mozilla.org/en-US/docs/Web/CSS/env()
 > https://juejin.cn/post/6844903712268222471
 > https://www.w3.org/TR/css-round-display-1/#viewport-fit-descriptor
 

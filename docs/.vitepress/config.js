@@ -68,6 +68,7 @@ function getJavaScriptSidebar() {
     { text: 'Vitepress', link: '/javascript/vitepress' },
     { text: 'vite', link: '/javascript/vite' },
     { text: 'chrome', link: '/javascript/chrome' },
+    { text: 'interpreter', link: '/javascript/interpreter' },
   ]
 }
 function getCSSSidebar() {
