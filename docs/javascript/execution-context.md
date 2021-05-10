@@ -28,6 +28,8 @@ Number String Boolean Symbol BigInt Object null undefined
 
 词法分析、语法解析、代码优化、代码生成
 
+Uncaught SyntaxError: Unexpected token
+
 
 ## Scope
 
@@ -55,7 +57,7 @@ console.log(foo, bar)
 ES6 块级作用域
 
 ```js
-function foo(){
+function foo (){
   for (let i = 0; i < 3; i++) {
     setTimeout(() => {
       console.log(i)
@@ -86,170 +88,243 @@ console.log(bar)
 
 ### Hoisting
 
+**按序执行么？**
+
 ```js
-console.log(f)
-var f = 1
-console.log(f)
-function f () {}
-console.log(f)
-// -----
-print()
-function print() {
-  console.log(1)
+bar()
+function bar () {
+  console.log(foo)
 }
-var print = function() {
-  console.log(2)
+var foo = 'foo'
+// => undefined
+// => undefined
+
+/** Vs **/
+bar()
+var foo = 'foo'
+function bar () {
+  console.log(foo)
 }
-print()
-// ---
 ```
 
-
-
-在 if 语句中定义的函数
+**声明式、表达式定义函数的区别**
 
 ```js
-console.log(foo, 'foo' in window) // undefined true
+foo()
+function foo () {
+  console.log('foo')
+}
+var foo = function () {
+  console.log(123)
+}
+foo()
+// => foo
+// => 123
+// => undefined
+
+/** Vs **/
+foo()
+function foo () {
+  console.log('foo')
+}
+function foo () {
+  console.log(123)
+}
+// => 123
+// => undefined
+```
+
+**在 if 语句中定义的函数**
+
+```js
+console.log(foo, 'foo' in window, bar, 'bar' in window)
 if (false) {
   function foo () {
     console.log('foo ~')
   }
+  var bar = 'bar'
 }
-foo() // Uncaught TypeError: foo is not a function
+foo()
+// => undefined true undefined true
+// => Uncaught TypeError: foo is not a function
 ```
+
 
 ### Scope Chain
 
+JavasSript 的作用域属于「词法作用域」或叫「静态作用域」
 
-
-**结论**
-- 在 if 代码块中，避免用声明式定义函数
-- 一段代码如果定义了两个相同名字的函数，那么最终生效的是最后一个函数
-- `var` `function` 声明的变量，存在变量提升的现象
--
-
-
-
-
-var 声明的变量和 function 声明的函数
-
-## This
-
-runtime binding
-
-
-
-### var let const
-
-var 存在着变量覆盖、变量污染
-
-三者是如何并存的？
-
-块级作用域就是通过词法环境的栈结构来实现的，而变量提升是通过变量环境来实现，通过这两者的结合，JavaScript引擎也就同时支持了变量提升和块级作用域了。
-
-
-## Scope Chain
-
-JavaScript 的三种作用域
-
-- 全局作用域
-- 函数作用域
-- eval 作用域
-- try-catch 作用域
-- 块级作用域
-
-里面声明的变量不能被外部访问
-
+**作用域链**
 
 ```js
-var name = 'f'
-bar()
-function foo () {
+function bar () {
   console.log(name)
 }
+function foo () {
+  var name = 'foo'
+  bar()
+}
+var name = 'golobal'
+foo()
+// => golobal
+// => undefined
+```
+
+**简单表示调用栈**
+
+```
+             Call Stack
+┌──────────────────────────────────┐
+│         ┌────────────────────┐   │
+│    bar: │                    │   │
+│         └────────────────────┘   │
+│         ┌────────────────────┐   │
+│    foo: │var name = 'foo'    │   │
+│         └────────────────────┘   │
+│         ┌────────────────────┐   │
+│         │var name = 'global' │   │
+│ global: │function bar        │   │
+│         │function foo        │   │
+│         └────────────────────┘   │
+└──────────────────────────────────┘
+```
+
+**块级作用域如何实现**
+
+var 声明的变量，存在着变量覆盖、变量污染的问题，ES6 引入块级作用域
+
+```js
 function bar () {
-  var name = 'b'
-  foo()
+  let age = 10
+  {
+    let name = 'bar'
+  }
+  console.log(name, age)
 }
-```
-
-
-作用域(scope)
-
-作用域链(scope chain)
-
-调用栈就是用来管理函数调用关系的一种数据结构。因此要讲清楚调用栈，你还要先弄明白函数调用和栈结构
-
-当使用eval函数的时候，eval的代码也会被编译，并创建执行上下文。
-## Execution Stack
-
-- stack exceed error
-
-each function call creates a new execution context
-
-to stages to create a execution context by js interpreter
-
-函数和变量是有区别的
-
-```js
-// 两种写法一样么
-
-```
-
-函数和方法是有区别的
-
-
-```js
-function b () {
-  throw 'errr'
+function foo () {
+  var name = 'foo'
+  let age = 22
+  bar()
 }
+var name = 'golobal'
+let age = 6
+foo()
+// => golobal 6
+// => undefined
 ```
 
-
-```js
-console.log(a)
-function a () { console.log('a') }
-var a = 90
-console.log(a)
+```
+                    Call Stack
+┌───────────────────────────────────────────────────┐
+│       ┌────────────────────────────────────────┐  │
+│       │   variable env         lexical env     │  │
+│       │ ┌────────────────┐ ┌─────────────────┐ │  │
+│       │ │                │ │let name = 'bar' │ │  │
+│   bar │ │                │ └─────────────────┘ │  │
+│       │ │                │ ┌─────────────────┐ │  │
+│       │ │                │ │let age = 10     │ │  │
+│       │ └────────────────┘ └─────────────────┘ │  │
+│       └────────────────────────────────────────┘  │
+│       ┌────────────────────────────────────────┐  │
+│       │   variable env         lexical env     │  │
+│   foo │ ┌────────────────┐ ┌─────────────────┐ │  │
+│       │ │var name = 'foo'│ │let age = 22     │ │  │
+│       │ └────────────────┘ └─────────────────┘ │  │
+│       └────────────────────────────────────────┘  │
+│       ┌────────────────────────────────────────┐  │
+│       │   variable env          lexical env    │  │
+│       │ ┌───────────────────┐ ┌──────────────┐ │  │
+│ global│ │var name = 'global'│ │ let age = 6  │ │  │
+│       │ │function bar       │ │              │ │  │
+│       │ │function foo       │ │              │ │  │
+│       │ └───────────────────┘ └──────────────┘ │  │
+│       └────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────┘
 ```
 
+`let` `const` 声明的变量，使用了小型的栈结构进行保存
 
-执行函数前，解释器先扫描一遍函数内部, 仅定义，而未赋值
+
+## Execution Context
+
+当函数调用时
+
 1. 创建阶段
-  - 创建 scope chain
-  - 创建 variables functions and arguments
-  - determine the value of ‘this’
+  - 初始化作用域链(Scope Chain)
+  - 创建变量对象(Variable Object)，用于保存声明的函数和变量
+  - 创建 arguments 对象，浅拷贝 arguments 对象
+  - 扫描函数内部
+    - 先扫描 function 声明的函数
+      - 如果 VO 中不存在，则以函数名为属性，值为该函数在内存中的地址
+      - 发现 function 声明的"同名"函数，则覆盖 VO 中已有的属性的值
+    - 再扫描 var 声明的变量
+      - 如果变量名在 VO 中不存在，则创建 VO 属性，初始化值为 undefined
+      - 如果变量名在 VO 中已存在，则忽略，继续往下扫描
+  - 确定 this 的值
 
 2. 激活、代码执行阶段
- - 给变量赋值、执行代码
+  - 给变量赋值、执行代码
 
- 执行上下文可抽象成
+var 和 function 声明同名情况以及 function 重复声明情况
 
 ```js
-executionContextObj = {
-  /* variableObject + all parent execution context's variableObject */
-  'scopeChain': {
-  },
-  /* function arguments / parame ters, inner variable and function declarations */
-  'variableObject': {
-      arguments: {
-        0: 22,
-        length: 1
-      },
-      f:  // pointer to the function
-      ...
-     },
-  'this': {}
+console.log(foo)
+function foo () {
+  console.log('foo')
 }
-
+function foo () {
+  console.log(123)
+}
+var foo = 90
+console.log(foo)
+// => ƒ foo () { console.log(123) }
+// => 90
+// => undefined
 ```
 
-### variable environment
-### lexical environment
 
-在编译阶段生成
+抽象表示执行上下文
 
-## closure
+```js
+var baz = 'baz'
+function foo (num) {
+  var name = 'foo'
+  function bar () { }
+}
+foo(3)
+```
+
+
+```js
+ExecutionContext = {
+  ScopeChain: {
+    /* VO + 所有父级的执行上下文的 VO */
+  },
+  VariableObject: {
+    arguments: {
+      '0': 3,
+      length: 1
+    },
+    name: 'foo',
+    bar: 0x12033 // 内存地址
+  },
+  this: window
+}
+```
+
+### Closure
+
+> 一个函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是闭包（closure）。也就是说，闭包让你可以在一个内层函数中访问到其外层函数的作用域。在 JavaScript 中，每当创建一个函数，闭包就会在函数创建的同时被创建出来。--- MDN
+
+### This
+
+`this` 是运行时绑定的
+
+1. 全局变量
+2. 构造函数
+3. 对象方法
+4. call apply bind 绑定
+
 
 > [What is the Execution Context & Stack in JavaScript?](https://medium.com/@itIsMadhavan/what-is-the-execution-context-stack-in-javascript-e169812e851a)
 
