@@ -88,7 +88,8 @@ function getServerSidebar() {
 function getMiscSidebar() {
   return [
     { text: 'FE Team', link: '/misc/fe-team' },
-    { text: 'Start yml', link: '/misc/start-yml' },
+    { text: 'Start YML', link: '/misc/start-yml' },
+    { text: 'Computer Words', link: '/misc/words' },
   ]
 }
 

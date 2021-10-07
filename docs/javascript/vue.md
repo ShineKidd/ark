@@ -2,24 +2,29 @@
 title: vue vue-router vuex
 ---
 
-## vue
+## vue 2.x
+
+渲染流程
+
+new Vue -> init -> $mount -> compile(可在构建工具 vue-loader 完成) -> render -> vnode -> patch -> DOM
+
+
 
 ### jsx
-
 
 ### 函数式组件
 
 
 
 
-## vuex
+## vuex 3.x
 
 
 ### 动态注入 modlue
 
 
 
-## vue-router
+## vue-router 3.x
 
 ### 路由异步组件的实现
 
@@ -65,6 +70,10 @@ const routes = [
 ]
 ```
 
+:::warning
+组件内的路由导航守卫失效！
+:::
+
 
 ### 如何重置路由
 
@@ -86,3 +95,17 @@ const resetRouter = () => {
   }
 }
 ```
+
+:::warning
+这里使用了非标准 API！
+:::
+
+
+## vue 3.x
+
+- 更易维护的代码 monorepo，模块之间依赖明确，职责鲜明，可单独引入模块（tree-shaking）
+- 更好的 typescript 支持
+- 编译时优化，标记静态节点，以实现 patch 过程只比较动态节点, 优化 slot ，事件监听函数缓存优化
+- proxy 更好的数据劫持性能
+- 重写了 diff 算法
+- 组合 API ，更好的逻辑复用，代码组织和类型支持（mixin 存在命名冲突、数据来源不清晰）
