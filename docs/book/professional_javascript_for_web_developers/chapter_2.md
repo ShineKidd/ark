@@ -48,4 +48,4 @@ IE5.5 发明了文档模式的概念，可使用 doctype 切换文档模式。�
 
 ## 确保 JavaScript 不可用时的用户体验
 
-在不支持 JavaScript 或关闭 JavaScript 功能的浏览器上，会解析 /<noscript> 标签的内容。这样可提醒用户页面依赖 JavaScript 才能正常工作
+在不支持 JavaScript 或关闭 JavaScript 功能的浏览器上，会解析 \<noscript> 标签的内容。这样可提醒用户页面依赖 JavaScript 才能正常工作
