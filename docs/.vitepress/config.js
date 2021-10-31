@@ -25,6 +25,7 @@ module.exports = {
     },
 
     nav: [
+      { text: 'Weekly', link: '/weekly/' },
       { text: 'Java', link: '/java/class' },
       { text: 'JavaScript', link: '/javascript/webpack' },
       { text: 'Server', link: '/server/shell' },
@@ -35,6 +36,7 @@ module.exports = {
     ],
 
     sidebar: {
+      '/weekly/': getWeeklySidebar(),
       '/java/': getJavaSidebar(),
       '/javascript/': getJavaScriptSidebar(),
       '/css/': getCSSSidebar(),
@@ -45,6 +47,12 @@ module.exports = {
       '/code/': getCodeSidebar(),
     }
   }
+}
+
+function getWeeklySidebar () {
+  return [
+    { text: '第1期', link: '/weekly/2021-10-31' }
+  ]
 }
 
 function getJavaSidebar() {
