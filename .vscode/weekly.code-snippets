@@ -1,0 +1,25 @@
+{
+  "weekly": {
+    "description": "snippet for starting a weekly",
+    "scope": "markdown",
+    "prefix": "weekly",
+    "body": [
+      "---",
+      "title: 阅读周报 —— 第 ${1} 期",
+      "---",
+      "",
+      "## 知名博主",
+      "",
+      "",
+      "## 学习资料",
+      "",
+      "",
+      "## 文章",
+      "",
+      "",
+      "## 工具",
+      "",
+      "",
+    ]
+  }
+}
