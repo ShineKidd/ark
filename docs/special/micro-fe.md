@@ -2,29 +2,23 @@
 title: 微前端
 ---
 
+## 是什么
 
-统一域名，共享 cookie storage
+> https://micro-frontends.org/
 
 
-### webpack5 -- module federation
 
-开发和生产保持一致的运行结果
+## 方案
 
-remote cache ?
-远程模块 typing 的问题？
-需要工具管理这些 remotes 服务？
 
-改动成本
+1. [乾坤](https://qiankun.umijs.org/)
 
-### Bit
 
-at build time ?
 
-改动成本
+## 未来
 
-### Single SPA (qiankun mooa)
 
-子应用支持不同的的技术栈
+参考
 
 > [Webpack 5 Module Federation: A game-changer in JavaScript architecture](https://indepth.dev/posts/1173/webpack-5-module-federation-a-game-changer-in-javascript-architecture#its-important-to-note-these-are-special-entry-points-they-are-only-a-few-kb-in-size-containing-a-special-webpack-runtime-that-can-interface-with-the-host-it-is-not-a-standard-entry-point--7/)
 > [ModuleFederationWebpack5](https://github.com/sokra/slides/blob/master/content/ModuleFederationWebpack5.md)
