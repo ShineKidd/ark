@@ -1,1 +1,0 @@
-import{_ as a,c as t,o as e}from"./app.8a965c85.js";const l='{"title":"java IO \u6D41","description":"","frontmatter":{"title":"java IO \u6D41"},"relativePath":"java/io.md","lastUpdated":1636636929337}',o={};function r(c,s,n,p,i,_){return e(),t("div")}var f=a(o,[["render",r]]);export{l as __pageData,f as default};

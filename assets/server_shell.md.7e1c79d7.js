@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a}from"./app.8a965c85.js";const l='{"title":"","description":"","frontmatter":{},"relativePath":"css/css-next.md","lastUpdated":1636853987097}',s={};function c(r,o,n,p,_,d){return a(),e("div")}var f=t(s,[["render",c]]);export{l as __pageData,f as default};
