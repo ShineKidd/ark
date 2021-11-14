@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as a,a as o}from"./app.b2e40202.js";const m='{"title":"","description":"","frontmatter":{},"relativePath":"java/thread.md","lastUpdated":1636875147167}',s={},r=o("p",null,"#ddff \u5927\u5927\u65B9\u65B9",-1),c=[r];function n(d,_,p,i,l,f){return a(),e("div",null,c)}var u=t(s,[["render",n]]);export{m as __pageData,u as default};
