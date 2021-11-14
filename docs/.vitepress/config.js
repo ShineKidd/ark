@@ -51,7 +51,9 @@ module.exports = {
 
 function getWeeklySidebar () {
   return [
-    { text: '第1期', link: '/weekly/2021-10-31' }
+    { text: '第1期', link: '/weekly/2021-10-31' },
+    { text: '第2期', link: '/weekly/2021-11-07' },
+    { text: '第3期', link: '/weekly/2021-11-14' },
   ]
 }
 
