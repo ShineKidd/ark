@@ -1,1 +1,0 @@
-import{_ as t,c as e,o as a,a as s}from"./app.b2e40202.js";const u='{"title":"","description":"","frontmatter":{},"relativePath":"java/class.md","lastUpdated":1636875147167}',o={},c=s("p",null,"\u4F46\u662F\u5206\u8EAB\u4E4F\u672F",-1),r=[c];function n(_,p,l,d,i,f){return a(),e("div",null,r)}var h=t(o,[["render",n]]);export{u as __pageData,h as default};
