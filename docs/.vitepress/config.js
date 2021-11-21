@@ -49,11 +49,12 @@ module.exports = {
   }
 }
 
-function getWeeklySidebar () {
+function getWeeklySidebar() {
   return [
     { text: '第1期', link: '/weekly/2021-10-31' },
     { text: '第2期', link: '/weekly/2021-11-07' },
     { text: '第3期', link: '/weekly/2021-11-14' },
+    { text: '第4期', link: '/weekly/2021-11-21' },
   ]
 }
 
@@ -105,6 +106,9 @@ function getMiscSidebar() {
 
 function getGitSidebar() {
   return [
+    { text: '常用命令', link: '/git/command' },
+    { text: 'commit lint', link: '/git/commit-fomat' },
+    { text: '实战', link: '/git/practice' },
   ]
 }
 
